@@ -11,7 +11,6 @@ instructions = {'p':'push',
                 'm':'mult',
                 's':'sub'}
 
-old_ans = {1 : 'p'}
 ans = {1 : 'p'}
 ans_attr = {1 : 'base'}
 
@@ -49,7 +48,7 @@ methods:
 
 
 def best(n:int, a = '') -> str:
-    global ans, old_ans
+    global ans 
     if n < 0:
         raise Exception('Not implemented yet')
     if n == 0:
@@ -63,16 +62,8 @@ def best(n:int, a = '') -> str:
         x = method(n,a)
         if len(x) < len(mx[0]):
             mx = x, method.__name__
-    if n in old_ans:
-        cur = len(old_ans[n])
-        if cur > len(mx[0]):
-            ans[n] = mx[0]
-            ans_attr[n] = mx[1]
-        else:
-            ans[n] = old_ans[n]
-    else:
-        ans[n] = mx[0]
-        ans_attr[n] = mx[1]
+    ans[n] = mx[0]
+    ans_attr[n] = mx[1]
     return ans[n]
 
 def bin1(n:int, a:str) -> str:
@@ -129,17 +120,6 @@ def dec(n:int, a:str) -> str:
 
 methods = [bin2, bin1, fact, dec]
 
-def fixed(t):
-    global ans, old_ans
-    while True:
-        t()
-        if ans == old_ans:
-            break
-        old_ans = ans.copy()
-        ans = {1 : 'p'}
-        print('-----')
-
-
 def test():
     for i in range(20):
         print(best(i))
@@ -155,4 +135,15 @@ def test2():
     for i in set(vals):
         print(i, vals.count(i))
 
-fixed(test2)
+def test3():
+    print(len(best(2**40)))
+    print(ans[2**40])
+    print(ans_attr[2**40])
+
+
+def test4():
+    for i in range(2**40):
+        best(i)
+    print(len(best(2**40)))
+
+test4()
