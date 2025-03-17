@@ -146,4 +146,5 @@ def test4():
         best(i)
     print(len(best(2**40)))
 
-test4()
+if __name__ == '__main__':
+    test4()
