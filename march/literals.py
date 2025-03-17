@@ -118,7 +118,7 @@ def dec(n:int, a:str) -> str:
     a += 'pa'
     return a + best(n-1)
 
-methods = [bin2, bin1, fact, dec]
+methods = [bin2, bin1, fact]
 
 def test():
     for i in range(20):
