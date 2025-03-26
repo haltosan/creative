@@ -1,0 +1,7 @@
+Cavas ratio:
+2/3 x 1/3
+
+Canvas area:
+Something close to USA population / 10^x
+2020 census - 331,449,281
+2024 estimate - 340,110,988
