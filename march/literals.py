@@ -1,18 +1,18 @@
-from functools import reduce
-
 '''
-goal - figure out the optimal way to build numbers in piet with 1 sized color blocks
+goal - figure out the optimal way to build numbers in piet
+       use color block size of 1
 '''
 
 
-instructions = {'p':'push',
-                'd':'dup',
-                'a':'add',
-                'm':'mult',
-                's':'sub'}
+instructions = {'p': 'push',
+                'd': 'dup',
+                'a': 'add',
+                'm': 'mult',
+                's': 'sub'}
 
-ans = {1 : 'p'}
-ans_attr = {1 : 'base'}
+ans = {1: 'p'}
+ans_attr = {1: 'base'}
+
 
 def _prime_factors(n):
     i = 2
@@ -39,6 +39,7 @@ def _prime_factors(n):
     f[x] = xn
     return f
 
+
 '''
 methods:
     - binary; get binary representation, construct powers of 2 and add them
@@ -47,8 +48,8 @@ methods:
 '''
 
 
-def best(n:int, a = '') -> str:
-    global ans 
+def best(n: int, a='') -> str:
+    global ans
     if n < 0:
         raise Exception('Not implemented yet')
     if n == 0:
@@ -57,16 +58,17 @@ def best(n:int, a = '') -> str:
         return a+'p'  # simple base case
     if n in ans:
         return ans[n]
-    mx = [methods[0](n,''), methods[0].__name__]
+    mx = [methods[0](n, ''), methods[0].__name__]
     for method in methods[1:]:
-        x = method(n,a)
+        x = method(n, a)
         if len(x) < len(mx[0]):
             mx = x, method.__name__
     ans[n] = mx[0]
     ans_attr[n] = mx[1]
     return ans[n]
 
-def bin1(n:int, a:str) -> str:
+
+def bin1(n: int, a: str) -> str:
     '''either add 1 or shift'''
     assert n >= 2
 
@@ -79,7 +81,8 @@ def bin1(n:int, a:str) -> str:
         a = 'da' + a
     return best(n1) + a
 
-def bin2(n:int, a:str) -> str:
+
+def bin2(n: int, a: str) -> str:
     '''convert to bin, sum 1's'''
     assert n >= 2
     bin_str = bin(n)[:1:-1]  # cut off 0b and reverse
@@ -93,17 +96,16 @@ def bin2(n:int, a:str) -> str:
         else:
             a += 'da'  # shift
     a += 'a' * extra_add
-            
     return a
 
-def fact(n:int, a:str) -> str:
+
+def fact(n: int, a: str) -> str:
     '''get prime factorization, product them'''
     assert n >= 2
     p = _prime_factors(n)
     if len(p) == 1 and sum(p.values()) == 1:
         # the number is prime, use something else
         return '-' * 100
-    acc = []
     for i in p:
         # make the number
         a += best(i)
@@ -113,12 +115,15 @@ def fact(n:int, a:str) -> str:
     a += 'm' * (sum(p.values())-1)
     return a
 
-def dec(n:int, a:str) -> str:
+
+def dec(n: int, a: str) -> str:
     assert n >= 2
     a += 'pa'
     return a + best(n-1)
 
+
 methods = [bin2, bin1, fact]
+
 
 def test():
     for i in range(20):
@@ -135,6 +140,7 @@ def test2():
     for i in set(vals):
         print(i, vals.count(i))
 
+
 def test3():
     print(len(best(2**40)))
     print(ans[2**40])
@@ -145,6 +151,7 @@ def test4():
     for i in range(2**40):
         best(i)
     print(len(best(2**40)))
+
 
 if __name__ == '__main__':
     test4()

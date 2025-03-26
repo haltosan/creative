@@ -23,25 +23,28 @@ instructions = (
         ('duplicate', 'roll', 'in(n)'),
         ('in(c)', 'out(n)', 'out(c)'))
 inv_instructions = {
-        'push' : (0,1), 'pop' : (0,2),
-        'add' : (1,0), 'subtract' : (1,1), 'multiply' : (1,2),
-        'divide' : (2,0), 'mod' : (2,1), 'not' : (2,2),
-        'greater' : (3,0), 'pointer' : (3,1), 'switch' : (3,2),
-        'duplicate' : (4,0), 'roll' : (4,1), 'in(n)' : (4,2),
-        'in(c)' : (5,0), 'out(n)' : (5,1), 'out(c)' : (5,2)}
+        'push': (0, 1), 'pop': (0, 2),
+        'add': (1, 0), 'subtract': (1, 1), 'multiply': (1, 2),
+        'divide': (2, 0), 'mod': (2, 1), 'not': (2, 2),
+        'greater': (3, 0), 'pointer': (3, 1), 'switch': (3, 2),
+        'duplicate': (4, 0), 'roll': (4, 1), 'in(n)': (4, 2),
+        'in(c)': (5, 0), 'out(n)': (5, 1), 'out(c)': (5, 2)}
 
-def str_to_list(instrs:str) -> [str]:
+
+def str_to_list(instrs: str) -> [str]:
     return [literals.instructions[i] for i in instrs]
 
-def pixel_to_rgb(pixel:int) -> [int, int, int]:
+
+def pixel_to_rgb(pixel: int) -> [int, int, int]:
     r = pixel >> 0x10
     g = (pixel >> 0x8) & 0xff
     b = pixel & 0xff
     return r, g, b
 
-def padding(r:int, g:int, b:int) -> str:
+
+def padding(r: int, g: int, b: int) -> str:
     ret = []
-    for i in [r,g,b]:
+    for i in [r, g, b]:
         if i >= 100:
             ret.append(str(i))
         elif i >= 10:
@@ -50,7 +53,8 @@ def padding(r:int, g:int, b:int) -> str:
             ret.append('  ' + str(i))
     return ' '.join(ret)
 
-def pixels_to_ppm(pixels:[[int]]) -> str:
+
+def pixels_to_ppm(pixels: [[int]]) -> str:
     ''' pixel array to plain ppm string '''
     lines = ['P3']
     lines.append('# tool assisted image')
@@ -65,9 +69,6 @@ def pixels_to_ppm(pixels:[[int]]) -> str:
     return '\n'.join(lines) + '\n'
 
 
-
-
-
 if __name__ == '__main__':
     cases = ('pda', 'ms', '')
     truth = (['push', 'dup', 'add'],
@@ -75,17 +76,16 @@ if __name__ == '__main__':
              [])
     for i in range(len(truth)):
         assert str_to_list(cases[i]) == truth[i]
-    
     cases = colors[0]
-    truth = ((0xff,0xc0,0xc0), (0xff,0,0), (0xc0,0,0))
+    truth = ((0xff, 0xc0, 0xc0), (0xff, 0, 0), (0xc0, 0, 0))
     for i in range(len(truth)):
         assert pixel_to_rgb(cases[i]) == truth[i]
 
-    cases = ((0xff,0xff,0xff), (0xff,0xc0,0) , (0,0,0))
+    cases = ((0xff, 0xff, 0xff), (0xff, 0xc0, 0), (0, 0, 0))
     truth = ('255 255 255', '255 192   0', '  0   0   0')
     for i in range(len(truth)):
-        r,g,b = cases[i]
-        assert padding(r,g,b) == truth[i]
+        r, g, b = cases[i]
+        assert padding(r, g, b) == truth[i]
 
     cases = (
             ((0xffffff, 0xffc000),
@@ -94,20 +94,20 @@ if __name__ == '__main__':
              [0x00c0ff])
             )
     truth = (
-'''P3
+            '''P3
 # tool assisted image
 2 2
 255
 255 255 255  255 192   0
   3  20 100    0 192 255
 ''',
-'''P3
+            '''P3
 # tool assisted image
 1 2
 255
 255 192   0
   0 192 255
 '''
-)
+            )
     for i in range(len(truth)):
-        assert pixels_to_ppm(cases[i]) == truth[i], to_ppm(cases[i])
+        assert pixels_to_ppm(cases[i]) == truth[i], pixels_to_ppm(cases[i])

@@ -14,12 +14,14 @@ def fermat_is_prime(n, k=100) -> bool:
             return False
     return True
 
+
 def full_is_prime(n) -> bool:
     ''' return true if actually prime '''
     for i in range(2, ceil(sqrt(n)) + 1):
         if n % i == 0:
             return False
     return True
+
 
 if __name__ == '__main__':
     found = 0
