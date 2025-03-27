@@ -35,6 +35,11 @@ def str_to_list(instrs: str) -> [str]:
     return [literals.instructions[i] for i in instrs]
 
 
+def ops_to_pixels(instrs: [str]) -> [[int]]:
+    ''' convert list of instructions to pixel array '''
+    pass
+
+
 def pixel_to_rgb(pixel: int) -> [int, int, int]:
     r = pixel >> 0x10
     g = (pixel >> 0x8) & 0xff
@@ -76,6 +81,18 @@ if __name__ == '__main__':
              [])
     for i in range(len(truth)):
         assert str_to_list(cases[i]) == truth[i]
+
+    cases = (['push', 'dup', 'add'],
+             ['pop', 'pop'],
+             ['subtract', 'mod', 'not', 'greater', 'pointer', 'switch',
+              'roll', 'in(n)', 'in(c)', 'out(n)', 'out(c)'])
+    truth = ([0xffc0c0, 0xff0000, 0xff, 0xff00ff],
+             [0xffc0c0, 0xc00000, 0xff0000],
+             [0xffc0c0, 0xffff00, 0x00c0c0, 0xff00ff, 0xff00, 0xc000c0,
+              0xff00, 0xc00000, 0xff, 0xffff, 0xc000, 0xffff00])
+    for i in range(len(truth)):
+        assert ops_to_pixels(cases[i]) == truth[i]
+
     cases = colors[0]
     truth = ((0xff, 0xc0, 0xc0), (0xff, 0, 0), (0xc0, 0, 0))
     for i in range(len(truth)):
