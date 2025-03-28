@@ -13,6 +13,13 @@ colors = (
         (0xc0ffff, 0x00ffff, 0x00c0c0),
         (0xc0c0ff, 0x0000ff, 0x0000c0),
         (0xffc0ff, 0xff00ff, 0xc000c0))
+inv_colors = {
+        0xffc0c0: (0, 0), 0xff0000: (0, 1), 0xc00000: (0, 2),
+        0xffffc0: (1, 0), 0xffff00: (1, 1), 0xc0c000: (1, 2),
+        0xc0ffc0: (2, 0), 0x00ff00: (2, 1), 0x00c000: (2, 2),
+        0xc0ffff: (3, 0), 0x00ffff: (3, 1), 0x00c0c0: (3, 2),
+        0xc0c0ff: (4, 0), 0x0000ff: (4, 1), 0x0000c0: (4, 2),
+        0xffc0ff: (5, 0), 0xff00ff: (5, 1), 0xc000c0: (5, 2)}
 black = 0x0
 white = 0xffffff
 instructions = (
@@ -35,9 +42,16 @@ def str_to_list(instrs: str) -> [str]:
     return [literals.instructions[i] for i in instrs]
 
 
-def ops_to_pixels(instrs: [str]) -> [[int]]:
+def ops_to_pixels(instrs: [str], start=0xffc0c0) -> [[int]]:
     ''' convert list of instructions to pixel array '''
-    pass
+    pixels = [start]
+    for i in instrs:
+        prev = inv_colors[pixels[-1]]
+        offset = inv_instructions[i]
+        x, y = (offset[0] + prev[0]) % 6, (offset[1] + prev[1]) % 3
+        pixel = colors[x][y]
+        pixels.append(pixel)
+    return pixels
 
 
 def pixel_to_rgb(pixel: int) -> [int, int, int]:
@@ -76,13 +90,13 @@ def pixels_to_ppm(pixels: [[int]]) -> str:
 
 if __name__ == '__main__':
     cases = ('pda', 'ms', '')
-    truth = (['push', 'dup', 'add'],
-             ['mult', 'sub'],
+    truth = (['push', 'duplicate', 'add'],
+             ['multiply', 'subtract'],
              [])
     for i in range(len(truth)):
         assert str_to_list(cases[i]) == truth[i]
 
-    cases = (['push', 'dup', 'add'],
+    cases = (['push', 'duplicate', 'add'],
              ['pop', 'pop'],
              ['subtract', 'mod', 'not', 'greater', 'pointer', 'switch',
               'roll', 'in(n)', 'in(c)', 'out(n)', 'out(c)'])
@@ -91,7 +105,7 @@ if __name__ == '__main__':
              [0xffc0c0, 0xffff00, 0x00c0c0, 0xff00ff, 0xff00, 0xc000c0,
               0xff00, 0xc00000, 0xff, 0xffff, 0xc000, 0xffff00])
     for i in range(len(truth)):
-        assert ops_to_pixels(cases[i]) == truth[i]
+        assert (ans := ops_to_pixels(cases[i])) == truth[i], ans
 
     cases = colors[0]
     truth = ((0xff, 0xc0, 0xc0), (0xff, 0, 0), (0xc0, 0, 0))

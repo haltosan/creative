@@ -5,10 +5,10 @@ goal - figure out the optimal way to build numbers in piet
 
 
 instructions = {'p': 'push',
-                'd': 'dup',
+                'd': 'duplicate',
                 'a': 'add',
-                'm': 'mult',
-                's': 'sub'}
+                'm': 'multiply',
+                's': 'subtract'}
 
 ans = {1: 'p'}
 ans_attr = {1: 'base'}
