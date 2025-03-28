@@ -5,3 +5,37 @@ Canvas area:
 Something close to USA population / 10^x
 2020 census - 331,449,281
 2024 estimate - 340,110,988
+
+
+top --- bottom
+.create counter c.
+ c
+.create n.
+ nc
+dup
+ nnc
+3
+ 3nnc
+2
+ 23nnc
+roll
+ cnn
+dup
+ ccnn
+3
+ 3ccnn
+1
+ 13ccnn
+roll
+ cncn
+mod
+ rcn
+pop
+ cn
+2
+ 2cn
+1
+ 12cn
+roll
+ nc
+.repeat.
