@@ -14,15 +14,15 @@ top --- bottom
  nc
 dup
  nnc
-3
+3 - 5 instr
  3nnc
-2
+2 - 3 instr
  23nnc
 roll
  cnn
 dup
  ccnn
-3
+3 - 5 instr
  3ccnn
 1
  13ccnn
@@ -32,10 +32,25 @@ mod
  rcn
 pop
  cn
-2
+2 - 3 instr
  2cn
 1
  12cn
 roll
  nc
 .repeat.
+
+
+-right hand snake-
+push
+ 1
+push
+ 11
+pointer
+ 1
+pointer
+ 1
+
+-left hand snake-
+pppas . -1
+pointer
