@@ -52,5 +52,7 @@ pointer
  1
 
 -left hand snake-
-pppas . -1
+pppaa . 3
 pointer
+	messing around with it, using -1 here instead doesn't seem to work
+
